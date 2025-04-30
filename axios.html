@@ -117,11 +117,11 @@
                 body:body,
                 userId: 1
             };
-            axios.post('https://jsonplaceholder.typicode.com/posts',postData).then(function (res){
+            axios.post('https://jsonplaceholder.typicode.com/posts',postData).then(function (response){
                 console.log(res,'2222222222222')
                 const postResultDiv = document.getElementById('postResult');
                 postResultDiv.innerHTML = `<h3>提交成功!</h3>
-                <p><strong>相应状态<strong>:${res.status}</p>
+                <p><strong>响应状态<strong>:${res.status}</p>
                 <p><strong>创建的记录<strong>:${res.data.id}</p>
                 <p><strong>标题<strong>:${res.data.title}</p>
                 <p><strong>内容<strong>:${res.data.body}</p>
@@ -144,25 +144,29 @@
             }
         })
 
-        document.getElementById('asyncFetchButton').addEventListener('click',async function (){
+        document.getElementById('asyncFetchButton').addEventListener('click',async function () {
             try {
                 const title = document.getElementById('asyncTitleInput').value || '默认标题';
                 const body = document.getElementById('asyncBodyInput').value || '默认内容';
                 const postData = {
                     title: title,
                     body: body,
-                    userId: 1
+                    userId: 2
                 };
                 const res = await axios.post('https://jsonplaceholder.typicode.com/posts',postData);
                 const asyncPostResultDiv = document.getElementById('asyncPostResult');
-                asyncPostResultDiv.innerHTML = `<h3>提交成功!</h3>
-                <p><strong>相应状态<strong>:${res.status}</p>
-                <p><strong>创建的记录<strong>:${res.data.id}</p>
-                <p><strong>标题<strong>:${res.data.title}</p>
-                <p><strong>内容<strong>:${res.data.body}</p>
+                asyncPostResultDiv.innerHTML = `<h3>异步提交成功!</h3>
+                    <p><strong>响应状态：<strong>${res.status}</p>
+                    <p><strong>创建的记录<strong>:${res.data.id}</p>
+                    <p><strong>标题<strong>:${res.data.title}</p>
+                    <p><strong>内容<strong>:${res.data.body}</p>
                 `;
-            } catch (err) {
-                console.log(err)
+            } catch (error) {
+                console.error('Async/Await POST 请求出错:',error);
+                document.getElementById('asyncPostResult').innerHTML = `
+                    <p>异步提交数据时出错。</p>
+                    <p>错误信息: ${error.message}</p>
+                `;
             }
         })
     </script>

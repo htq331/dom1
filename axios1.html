@@ -1,0 +1,34 @@
+<script>
+    function debounce(func, delay) {
+        let timer;
+        return function () {
+            clearTimeout(timer);
+            time = setTimeout(() => {
+                func.apply(this,arguments);
+            },delay);
+        }
+    }
+    function throttle(func,delay) {
+        let lastTime = 0;
+        return function () {
+            const now = new Date().getTime();
+            if (now - lastTime >= delay) {
+                func.apply(this,arguments);
+                lastTime = now;
+            }
+        }
+    }
+    document.getElementById('fetchButton').addEventListener('click',debounce(function () {
+        zxios.get('https://s5.360game.360.cn/to5/mini/v21/category.html')
+        .then(function(response){
+            const users = response.data.data;
+            console.log(users,"---------------------");
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<h2>Users Found:</h2><ul>'+
+                users.map(user => `<li>${user.name}</li>`).join('');
+        })
+        .catch(function (error){
+            //
+        });
+    },1000));
+</script>
